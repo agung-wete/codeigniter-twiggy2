@@ -13,3 +13,4 @@ Just load/include it, and you can use it inside twig template
 #Requirement
 * PHP 7
 * TWIG 2.X
+* Composer
