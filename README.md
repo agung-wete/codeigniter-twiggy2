@@ -16,4 +16,4 @@ Just load/include it, and you can use it inside twig template
 * Composer
 
 ## License
-* MIT
+* [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/hyperium/hyper/master/LICENSE)
