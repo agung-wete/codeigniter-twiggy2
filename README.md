@@ -10,7 +10,10 @@ Just load/include it, and you can use it inside twig template
 * Using Twig 2.X
 * Support multiple theme
 
-#Requirement
+## Requirement
 * PHP 7
 * TWIG 2.X
 * Composer
+
+## License
+* MIT
