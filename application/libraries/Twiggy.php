@@ -70,8 +70,11 @@ class Twiggy
 		$this->theme($this->_config['default_theme'])
 			 ->layout($this->_config['default_layout'])
 			 ->template($this->_config['default_template']);
-
-		//loading function dan filter pindah ke function _load
+		
+		//debug mode ?
+		if ($this->_config['environment']['debug']) {
+			$this->_twig->addExtension(new Twig_Extension_Debug());			
+		}
 
 		$this->_globals['title'] = NULL;
 		$this->_globals['meta'] = NULL;
@@ -378,7 +381,7 @@ class Twiggy
 	 */
 
 	private function _load()
-	{	
+	{
 		// Auto-register functions.		
 		$function = get_defined_functions();
 		$function = array_values($function['user']);
@@ -426,13 +429,6 @@ class Twiggy
 		}
 		
 		$this->_rendered = TRUE;
-
-		//debug mode ?
-		if ($this->_config['environment']['debug']) {
-			if (! $this->_twig->hasExtension('Twig_Extension_Debug')) {
-				$this->_twig->addExtension(new Twig_Extension_Debug());
-			}			
-		}
 
 		$this->_twig->setLexer(new Twig_Lexer($this->_twig, $this->_config['delimiters']));	
 
