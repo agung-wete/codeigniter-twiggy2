@@ -96,8 +96,7 @@ class Twiggy
 		else
 		{
 			if($global)
-			{
-				$this->_twig->addGlobal($key, $value);
+			{				
 				$this->_globals[$key] = $value;
 			}
 			else
@@ -421,11 +420,18 @@ class Twiggy
 		}
 
 		$this->set('meta', $this->_compile_metadata(), TRUE);
+		//load all global
+		foreach ($this->_globals as $key => $value) {
+			$this->_twig->addGlobal($key, $value);
+		}
+		
 		$this->_rendered = TRUE;
 
 		//debug mode ?
 		if ($this->_config['environment']['debug']) {
-			$this->_twig->addExtension(new Twig_Extension_Debug());
+			if (! $this->_twig->hasExtension('Twig_Extension_Debug')) {
+				$this->_twig->addExtension(new Twig_Extension_Debug());
+			}			
 		}
 
 		$this->_twig->setLexer(new Twig_Lexer($this->_twig, $this->_config['delimiters']));	
