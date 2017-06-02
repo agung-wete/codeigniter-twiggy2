@@ -388,22 +388,22 @@ class Twiggy
 			return ( (strpos($value, 'twig_') === 0) OR (strpos($value, '_twig') === 0) ) ?  FALSE : TRUE;
 		});
 
-		$this->_twig->registerUndefinedFunctionCallback(function ($name) use ($function) {
+		$this->_twig->registerUndefinedFunctionCallback(function ($name) use ($function) {			
 	    	if (in_array($name, $function))
-	    	{
-	        	return new Twig_Function_Function($name);
-	    	}
+	    	{	    		
+	        	return new Twig_Function($name, $name);
+	    	}	    	
 	    	return false;
 		});
 
 		//free memory
 		unset($function);
 
-		if(isset($this->_config['register_functions'][0])) {			
+		if(isset($this->_config['register_functions'][0])) {		
 			$this->_twig->registerUndefinedFunctionCallback(function ($name) {
 		    	if (in_array($name, $this->_config['register_functions']))
 		    	{
-		        	return new Twig_Function_Function($name);
+		        	return new Twig_Function($name, $name);
 		    	}
 		    	return false;
 			});
@@ -414,7 +414,7 @@ class Twiggy
 			$this->_twig->registerUndefinedFilterCallback(function ($name) {
 		    	if (in_array($name, $this->_config['register_filters']))
 		    	{
-		        	return new Twig_SimpleFilter($name);
+		        	return new Twig_Filter($name, $name);
 		    	}
 		    	return false;
 			});
@@ -430,7 +430,7 @@ class Twiggy
 
 		$this->_twig->setLexer(new Twig_Lexer($this->_twig, $this->_config['delimiters']));	
 
-		return $this->_twig->loadTemplate($this->_template . $this->_config['template_file_ext']);
+		return $this->_twig->load($this->_template . $this->_config['template_file_ext']);
 	}
 
 	/**
