@@ -500,6 +500,7 @@ class Twiggy
 
 		// Check if HMVC is installed.
 		// NOTE: there may be a simplier way to check it but this seems good enough.
+		$use_module = FALSE;
 		if(method_exists($this->CI->router, 'fetch_module'))
 		{
 			$this->_module = $this->CI->router->fetch_module();
@@ -507,6 +508,7 @@ class Twiggy
 			// Only if the current page is served from a module do we need to add extra template locations.
 			if(!empty($this->_module))
 			{
+				$use_module = TRUE;
 				$module_locations = Modules::$locations;
 
 				foreach($module_locations as $loc => $offset)
@@ -514,14 +516,21 @@ class Twiggy
 					/* Only add the template location if the same exists, otherwise
 					you'll need always a directory for your templates, even your module
 					won't use templates */
-					if ( is_dir($loc . $this->_module . '/' . $this->_config['themes_base_dir'] . $theme) )
-						array_unshift($this->_template_locations[], $loc . $this->_module . '/' . $this->_config['themes_base_dir'] . $theme);
+					$theme_dir = $loc . $this->_module . '/' . $this->_config['themes_base_dir'] . $theme;
+					if ( is_dir($theme_dir) ) {
+						$this->_template_locations[] = $theme_dir;
+					}
 				}
 			}
 		}
 		
-		//selected theme should be number 1
-		array_unshift($this->_template_locations, $full_path);		
+		if ($use_module) {
+			// add selected theme as backup (last order)
+			$this->_template_locations[] = $full_path;
+		} else {
+			//selected theme should be number 1
+			array_unshift($this->_template_locations, $full_path);
+		}
 		
 		// Reset the paths if needed.
 		if(is_object($this->_twig_loader))
